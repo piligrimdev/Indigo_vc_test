@@ -15,6 +15,7 @@ class MovieSerializer(ModelSerializer):
         model = Movie
         fields = '__all__'
 
+
 class UserFlatSerializer(ModelSerializer):
     """
     Сериализатор для пользователей

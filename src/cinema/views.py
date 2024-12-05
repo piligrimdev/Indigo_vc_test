@@ -1,10 +1,8 @@
-from django.core.serializers import serialize
 from rest_framework import status
-from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
-from rest_framework.viewsets import ModelViewSet, ViewSet, GenericViewSet
+from rest_framework.viewsets import ModelViewSet
 
 from cinema.serializers import UserFlatSerializer, MovieSerializer
 from cinema.models import User, Movie
@@ -18,6 +16,7 @@ class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserFlatSerializer
 
+
 class MovieViewSet(ModelViewSet):
     """
     ViewSet для фильмов
@@ -25,6 +24,7 @@ class MovieViewSet(ModelViewSet):
     """
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+
 
 class UserFavouriteMoviesView(ModelViewSet):
     """
@@ -47,7 +47,8 @@ class UserFavouriteMoviesView(ModelViewSet):
 
     def _validate_request(self):
         """
-        Метод проверяет существование фильма и пользователя с id, переданными в запросе
+        Метод проверяет существование фильма и
+        пользователя с id, переданными в запросе
         :return:
         """
         movie_pk = self.kwargs.get('pk')
@@ -75,7 +76,6 @@ class UserFavouriteMoviesView(ModelViewSet):
             return Response(serializer.data)
 
         return Response(status=status.HTTP_404_NOT_FOUND)
-
 
     def delete(self, request, *args, **kwargs):
         if self._validate_request():

@@ -1,5 +1,3 @@
-from django.db.models import Prefetch
-
 from rest_framework.test import APITestCase
 from rest_framework import status
 
@@ -72,7 +70,6 @@ class CinemaAPITest(APITestCase):
         old_queryset = User.objects.get(id=3).favourites.all()
         old_db_data = MovieSerializer(old_queryset, many=True).data
 
-
         url = '/cinema/v1/users/3/favourites/3'
         response = self.client.post(url)
 
@@ -86,7 +83,6 @@ class CinemaAPITest(APITestCase):
 
         db_data = MovieSerializer(queryset, many=True).data
 
-
         # результаты до и после добавления различаются как от API
         self.assertNotEqual(old_movies_list, new_movies_list)
         self.assertTrue(len(new_movies_list) > len(old_movies_list))
@@ -96,8 +92,12 @@ class CinemaAPITest(APITestCase):
 
         # т.к. даные в БД и от API равны
         self.assertEqual(db_data, new_movies_list)
-        # можно проверить, что в БД в списке избранных у пользователя есть фильм с id = 3
-        self.assertTrue(User.objects.get(id=3).favourites.filter(id=3).exists())
+
+        # можно проверить, что в БД в списке избранных
+        # у пользователя есть фильм с id = 3
+        new_movie_exsist = (User.objects.get(id=3).
+                            favourites.filter(id=3).exists())
+        self.assertTrue(new_movie_exsist)
 
     def test_api_delete_favourite_movie_from_user(self):
         url = '/cinema/v1/users/3/favourites/'
@@ -110,7 +110,6 @@ class CinemaAPITest(APITestCase):
         old_movies_list = response.json()
         old_queryset = User.objects.get(id=3).favourites.all()
         old_db_data = MovieSerializer(old_queryset, many=True).data
-
 
         url = '/cinema/v1/users/3/favourites/1'
         response = self.client.delete(url)
@@ -125,7 +124,6 @@ class CinemaAPITest(APITestCase):
 
         db_data = MovieSerializer(queryset, many=True).data
 
-
         # результаты до и после добавления различаются как от API
         self.assertNotEqual(old_movies_list, new_movies_list)
         self.assertTrue(len(old_movies_list) > len(new_movies_list))
@@ -135,5 +133,8 @@ class CinemaAPITest(APITestCase):
 
         # т.к. даные в БД и от API равны
         self.assertEqual(db_data, new_movies_list)
-        # можно проверить, что в БД в списке избранных у пользователя есть фильм с id = 3
-        self.assertFalse(User.objects.get(id=3).favourites.filter(id=1).exists())
+        # можно проверить, что в БД в списке избранных
+        # у пользователя есть фильм с id = 3
+        new_movie_exsist = (User.objects.get(id=3).
+                            favourites.filter(id=3).exists())
+        self.assertFalse(new_movie_exsist)

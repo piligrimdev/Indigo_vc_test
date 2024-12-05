@@ -12,14 +12,22 @@ router.register('movies', MovieViewSet, 'movies')
 
 # Для избранных фильмов для пользователей регистрируется пути для методов
 # get, чтобы показать все избранные фильмы
-fav_list  = UserFavouriteMoviesView.as_view({'get': 'list'})
-# get, post и delete для просмотра, добавления нового фильма в избранное и удаление из избранного
-fav_movie = UserFavouriteMoviesView.as_view({'get': 'retrieve', 'post': 'post', 'delete': 'delete'})
+fav_list = UserFavouriteMoviesView.as_view({'get': 'list'})
+
+# get, post и delete для просмотра,
+# добавления нового фильма в избранное и удаление из избранного
+fav_movie = (UserFavouriteMoviesView.
+             as_view({'get': 'retrieve', 'post': 'post', 'delete': 'delete'}))
 
 
 urlpatterns = [
-        # slug:user_pk и <slug:pk> нужны для получения id пользователя и избранного фильма
-        path("v1/users/<slug:user_pk>/favourites/", fav_list, name="user-favourites-list"),
-        path("v1/users/<slug:user_pk>/favourites/<slug:pk>", fav_movie, name="user-favourite-details"),
+        # slug:user_pk и <slug:pk> нужны для получения
+        # id пользователя и избранного фильма
+        path("v1/users/<slug:user_pk>/favourites/",
+             fav_list, name="user-favourites-list"),
+
+        path("v1/users/<slug:user_pk>/favourites/<slug:pk>",
+             fav_movie, name="user-favourite-details"),
+
         path('v1/', include(router.urls)),
 ]

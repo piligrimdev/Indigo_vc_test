@@ -14,7 +14,8 @@ class Command(BaseCommand):
 
             movie1 = Movie.objects.get(name="Very epic movie")
 
-            movie2 = Movie.objects.get(name="Very epic movie 2:electric boogaloo")
+            movie2 = Movie.objects.get(name="Very epic"
+                                            " movie 2:electric boogaloo")
 
             movie3 = Movie.objects.get(name="Disney Fantasy")
 
@@ -31,4 +32,5 @@ class Command(BaseCommand):
             user2.favourites.add(movie3)
             user2.save()
 
-            self.stdout.write(self.style.SUCCESS("Favourite movies added to users"))
+            self.stdout.write(
+                self.style.SUCCESS("Favourite movies added to users"))
